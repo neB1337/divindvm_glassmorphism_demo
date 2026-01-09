@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Morphism Kit - Angular Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg,  #B5244A 0%, #000000 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Glass morphism base styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Variant styles */
+        .glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-medium {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-heavy {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-subtle {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-dramatic {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(150, 100, 200, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(150, 100, 200, 0.5);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .grid-variants {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* Cards */
+        .card {
+            padding: 30px;
+            border-radius: 16px;
+        }
+
+        .card h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card.selected {
+            border: 2px solid rgba(200, 100, 200, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Input fields */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-overlay .glass {
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* Feature list */
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ff9f43;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: -350px;
+            top: 0;
+            width: 320px;
+            height: 100vh;
+            background: rgba(245, 24, 24, 0.3);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 30px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            color: white;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-section-title {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.85);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: rgba(100, 200, 255, 0.6);
+            color: white;
+        }
+
+        .sidebar-item.active {
+            background: rgba(100, 200, 255, 0.2);
+            border-left-color: rgba(100, 200, 255, 0.8);
+            color: white;
+            font-weight: 500;
+        }
+
+        .sidebar-close {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            z-index: 998;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 280px;
+            }
+
+            .sidebar-close {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+        
+        <div class="sidebar-header">
+            <h3>🅰️ Navigation</h3>
+            <p>Angular Demo</p>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Components</div>
+            <div class="sidebar-item active" onclick="scrollToSection('variants')">📊 Varianten</div>
+            <div class="sidebar-item" onclick="scrollToSection('components')">📦 Komponenten</div>
+            <div class="sidebar-item" onclick="scrollToSection('prebuilt')">💳 Pre-built</div>
+            <div class="sidebar-item" onclick="scrollToSection('example')">💻 Beispiel</div>
+            <div class="sidebar-item" onclick="scrollToSection('form')">📝 Formular</div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Features</div>
+            <div class="sidebar-item" onclick="alert('Angular 12+ Support')">🅰️ Angular 12+</div>
+            <div class="sidebar-item" onclick="alert('Typsichere Komponenten')">🔧 Type Safe</div>
+            <div class="sidebar-item" onclick="alert('Service Integration')">📡 Services</div>
+            <div class="sidebar-item" onclick="alert('Dependency Injection')">🔌 DI Pattern</div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Examples</div>
+            <div class="sidebar-item" onclick="alert('GlassCard Komponente')">💳 Glass Card</div>
+            <div class="sidebar-item" onclick="alert('GlassButton Komponente')">🔘 Glass Button</div>
+            <div class="sidebar-item" onclick="alert('GlassInput Komponente')">📝 Glass Input</div>
+            <div class="sidebar-item" onclick="alert('GlassModal Komponente')">🗂️ Glass Modal</div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Resources</div>
+            <div class="sidebar-item" onclick="alert('GitHub Repository')">📚 Dokumentation</div>
+            <div class="sidebar-item" onclick="alert('npm glassmorphic-kit')">📦 npm Package</div>
+            <div class="sidebar-item" onclick="alert('API Docs')">📖 API Docs</div>
+            <div class="sidebar-item" onclick="alert('Issues & Support')">💬 Support</div>
+        </div>
+    </div>
+        <!-- Header -->
+        <header>
+            <h1>🅰️ Glass Morphism Kit - Angular Demo</h1>
+            <p>Beautiful Apple-inspired glass effects für Angular Anwendungen</p>
+            <span class="badge">Angular Framework</span>
+        </header>
+
+        <!-- Hero Section -->
+        <section>
+            <div class="glass glass-dramatic card" style="text-align: center;">
+                <h3>Glass Morphism mit Angular</h3>
+                <p>Moderne Glaseffekte mit Angular Komponenten, Services und Direktiven</p>
+                <button class="btn" onclick="openModal()">Modal öffnen</button>
+            </div>
+        </section>
+
+        <!-- Variants Section -->
+        <section id="variants">
+            <h2>Vorkonfigurierte Varianten</h2>
+            <div class="grid grid-variants">
+                <div class="glass glass-light card" style="cursor: pointer;" onclick="selectVariant(this, 'light')">
+                    <h3>Light</h3>
+                    <p>Subtil</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 8px</p>
+                </div>
+
+                <div class="glass glass-medium card selected" style="cursor: pointer;" onclick="selectVariant(this, 'medium')">
+                    <h3>Medium</h3>
+                    <p>Standard</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 12px</p>
+                </div>
+
+                <div class="glass glass-heavy card" style="cursor: pointer;" onclick="selectVariant(this, 'heavy')">
+                    <h3>Heavy</h3>
+                    <p>Intensiv</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 20px</p>
+                </div>
+
+                <div class="glass glass-subtle card" style="cursor: pointer;" onclick="selectVariant(this, 'subtle')">
+                    <h3>Subtle</h3>
+                    <p>Zart</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 4px</p>
+                </div>
+
+                <div class="glass glass-dramatic card" style="cursor: pointer;" onclick="selectVariant(this, 'dramatic')">
+                    <h3>Dramatic</h3>
+                    <p>Spektakulär</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 30px</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Angular Komponenten -->
+        <section id="components">
+            <h2>Angular Komponenten & Services</h2>
+            <div class="grid grid-2">
+                <div class="glass glass-medium card">
+                    <h3>🔧 GlassMorphismService</h3>
+                    <p>Angular Service für zentrale Verwaltung von Styling-Konfigurationen und Theme-Management.</p>
+                    <ul class="features">
+                        <li>Config Management</li>
+                        <li>Theme Service</li>
+                        <li>Observable Streams</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>📦 Komponenten-Direktiven</h3>
+                    <p>Typsichere Angular Komponenten mit Property Binding und Event Handling.</p>
+                    <ul class="features">
+                        <li>Property Binding</li>
+                        <li>Two-way Binding</li>
+                        <li>Event Binding</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🔄 Module & Providers</h3>
+                    <p>Angular Module und Dependency Injection für saubere Architektur und Wiederverwendbarkeit.</p>
+                    <ul class="features">
+                        <li>NgModule Export</li>
+                        <li>Dependency Injection</li>
+                        <li>Lazy Loading Ready</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🎯 Structural Directives</h3>
+                    <p>Angular *ngIf, *ngFor und *ngSwitch für dynamische Template-Rendering.</p>
+                    <ul class="features">
+                        <li>*ngIf Conditional</li>
+                        <li>*ngFor Loops</li>
+                        <li>Template Variables</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pre-built Components -->
+        <section id="prebuilt">
+            <h2>Pre-built Komponenten</h2>
+            <div class="grid grid-2">
+                <div class="glass glass-medium card">
+                    <h3>💳 glass-card</h3>
+                    <p>Angular Komponente für Content-Layouts mit Glas-Effekten und Slot-Support.</p>
+                    <button class="btn">Mehr Info</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🔘 glass-button</h3>
+                    <p>Typsichere Button-Komponente mit (click) Event Binding und Varianten.</p>
+                    <button class="btn">Ausprobieren</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>📝 glass-input</h3>
+                    <p>Input-Komponente mit ngModel Two-way Binding für Formulare.</p>
+                    <button class="btn">Form Demo</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🗂️ glass-modal</h3>
+                    <p>Modal-Komponente mit @Input Properties und @Output Events.</p>
+                    <button class="btn" onclick="openModal()">Öffnen</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Angular Example -->
+        <section id="example">
+            <h2>Beispiel: Angular Komponente</h2>
+            <div class="glass glass-medium card">
+                <h3>TypeScript Component mit ngModel</h3>
+                <pre style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; overflow-x: auto; color: #4ade80; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+<span style="color: #ff7f50;">import</span> { Component } <span style="color: #ff7f50;">from</span> <span style="color: #a8e6cf;">'@angular/core'</span>;
+<span style="color: #ff7f50;">import</span> { GlassMorphismService } <span style="color: #ff7f50;">from</span> <span style="color: #a8e6cf;">'glassmorphic-kit'</span>;
+
+<span style="color: #dda15e;">@Component</span>({
+  <span style="color: #bc6c25;">selector</span>: <span style="color: #a8e6cf;">'app-root'</span>,
+  <span style="color: #bc6c25;">template</span>: <span style="color: #a8e6cf;">`
+    &lt;glass-morphism [variant]="selectedVariant"&gt;
+      &lt;h1&gt;{{ title }}&lt;/h1&gt;
+      &lt;glass-input 
+        [(ngModel)]="inputValue"
+        placeholder="Enter text..."&gt;
+      &lt;/glass-input&gt;
+      &lt;glass-button (click)="onSubmit()"&gt;
+        Submit
+      &lt;/glass-button&gt;
+    &lt;/glass-morphism&gt;
+  `</span>
+})
+<span style="color: #ff7f50;">export class</span> AppComponent {
+  selectedVariant = <span style="color: #a8e6cf;">'medium'</span>;
+  inputValue = <span style="color: #a8e6cf;">''</span>;
+
+  <span style="color: #ff7f50;">constructor</span>(<span style="color: #ff7f50;">private</span> glassService: GlassMorphismService) {}
+}
+                </pre>
+            </div>
+        </section>
+
+        <!-- Angular Form Example -->
+        <section id="form">
+            <h2>Beispiel: Kontaktformular</h2>
+            <div class="glass glass-medium card">
+                <h3>Angular Form mit Glass-Komponenten</h3>
+                <form onsubmit="return false;">
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" placeholder="Dein Name..." />
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="deine@email.com" />
+                    </div>
+
+                    <div class="input-group">
+                        <label>Nachricht</label>
+                        <textarea placeholder="Schreib eine Nachricht..."></textarea>
+                    </div>
+
+                    <button class="btn" onclick="alert('✅ Nachricht in Angular verarbeitet!')">Senden</button>
+                    <button class="btn" style="margin-left: 10px; background: rgba(255, 100, 100, 0.2); border-color: rgba(255, 150, 150, 0.3);">Zurücksetzen</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section>
+            <h2>Angular Features</h2>
+            <div class="glass glass-light card" style="padding: 40px;">
+                <ul class="features" style="column-count: 2; gap: 30px;">
+                    <li>🅰️ Angular 12+ Support</li>
+                    <li>🔧 GlassMorphismService</li>
+                    <li>📦 Typsichere Komponenten</li>
+                    <li>🎯 @Input & @Output Properties</li>
+                    <li>🔄 Two-way ngModel Binding</li>
+                    <li>🎨 Dynamic ngStyle Support</li>
+                    <li>📋 ngFor & ngIf Support</li>
+                    <li>⚡ Change Detection Optimized</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>🅰️ Angular Demo | Glass Morphism Kit</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Angular Framework mit modernen Glaseffekten</p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="glass glass-medium card">
+            <h2>Glass Modal in Angular</h2>
+            <p>Dies ist ein Modal, das mit Angular Property Binding und Event Handling gesteuert wird.</p>
+            <p style="margin-bottom: 20px;">Angular ermöglicht TypeScript-basierte Komponenten mit vollständigem Control über Zustand und Verhalten.</p>
+            <button class="btn" onclick="closeModal()">Schließen</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+            sidebar.classList.toggle('active');
+            body.classList.toggle('sidebar-open');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        function scrollToSection(sectionId) {
+            closeSidebar();
+            
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                
+                // Update active menu item
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }
+        }
+
+        function selectVariant(element, variant) {
+            document.querySelectorAll('.grid-variants .card').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.sidebar-toggle');
+            if (!sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('active')) {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

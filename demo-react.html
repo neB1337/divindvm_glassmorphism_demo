@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Morphism Kit - React Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #6e6e6e 0%, #000000 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Glass morphism base styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Variant styles */
+        .glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-medium {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-heavy {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-subtle {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-dramatic {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(100, 200, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(100, 200, 255, 0.5);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .grid-variants {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* Cards */
+        .card {
+            padding: 30px;
+            border-radius: 16px;
+        }
+
+        .card h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card.selected {
+            border: 2px solid rgba(100, 200, 255, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Input fields */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-overlay .glass {
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* Feature list */
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>⚛️ Glass Morphism Kit - React Demo</h1>
+            <p>Beautiful Apple-inspired glass effects für React Anwendungen</p>
+            <span class="badge">React Framework</span>
+        </header>
+
+        <!-- Hero Section -->
+        <section>
+            <div class="glass glass-dramatic card" style="text-align: center;">
+                <h3>Glass Morphism mit React</h3>
+                <p>Moderne Glaseffekte mit React-Komponenten, Hooks und State-Management</p>
+                <button class="btn" onclick="openModal()">Modal öffnen</button>
+            </div>
+        </section>
+
+        <!-- Variants Section -->
+        <section>
+            <h2>Vorkonfigurierte Varianten</h2>
+            <div class="grid grid-variants">
+                <div class="glass glass-light card" style="cursor: pointer;" onclick="selectVariant(this, 'light')">
+                    <h3>Light</h3>
+                    <p>Subtil</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 8px</p>
+                </div>
+
+                <div class="glass glass-medium card selected" style="cursor: pointer;" onclick="selectVariant(this, 'medium')">
+                    <h3>Medium</h3>
+                    <p>Standard</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 12px</p>
+                </div>
+
+                <div class="glass glass-heavy card" style="cursor: pointer;" onclick="selectVariant(this, 'heavy')">
+                    <h3>Heavy</h3>
+                    <p>Intensiv</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 20px</p>
+                </div>
+
+                <div class="glass glass-subtle card" style="cursor: pointer;" onclick="selectVariant(this, 'subtle')">
+                    <h3>Subtle</h3>
+                    <p>Zart</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 4px</p>
+                </div>
+
+                <div class="glass glass-dramatic card" style="cursor: pointer;" onclick="selectVariant(this, 'dramatic')">
+                    <h3>Dramatic</h3>
+                    <p>Spektakulär</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">blur: 30px</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- React Komponenten -->
+        <section>
+            <h2>React Komponenten & Hooks</h2>
+            <div class="grid grid-2">
+                <div class="glass glass-medium card">
+                    <h3>🎣 useGlassMorphism Hook</h3>
+                    <p>Custom Hook für flexible Styling-Optionen mit dynamischen Effekten und Event-Handling.</p>
+                    <ul class="features">
+                        <li>Dynamische Stile</li>
+                        <li>Hover Effects</li>
+                        <li>Event Handler</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>📦 Komponenten-Props</h3>
+                    <p>Alle Komponenten sind vollständig anpassbar über Props und Inline-Styles.</p>
+                    <ul class="features">
+                        <li>Variant Control</li>
+                        <li>Custom Styles</li>
+                        <li>onClick Handler</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🔄 State Management</h3>
+                    <p>React State zum Verwalten von Variant-Auswahl, Modal-Zustand und Formulardaten.</p>
+                    <ul class="features">
+                        <li>useState Hook</li>
+                        <li>useState Callbacks</li>
+                        <li>Conditional Rendering</li>
+                    </ul>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🎨 Styled Components</h3>
+                    <p>Inline CSS und Classname Props für flexible Styling-Optionen.</p>
+                    <ul class="features">
+                        <li>CSS Props</li>
+                        <li>Dynamic Classes</li>
+                        <li>Hover Animations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pre-built Components -->
+        <section>
+            <h2>Pre-built Komponenten</h2>
+            <div class="grid grid-2">
+                <div class="glass glass-medium card">
+                    <h3>💳 GlassCard</h3>
+                    <p>Perfekt für Content-Layouts und Product-Cards mit eleganten Glaseffekten.</p>
+                    <button class="btn">Mehr Info</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🔘 GlassButton</h3>
+                    <p>Interaktive Buttons mit Hover-Effekten und verschiedenen Varianten.</p>
+                    <button class="btn">Ausprobieren</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>📝 GlassInput</h3>
+                    <p>Transparente Eingabefelder mit Glaseffekten für moderne Formulare.</p>
+                    <button class="btn">Form Demo</button>
+                </div>
+
+                <div class="glass glass-medium card">
+                    <h3>🗂️ GlassModal</h3>
+                    <p>Modale Dialoge mit Glas-Effekten für wichtige Benutzer-Interaktionen.</p>
+                    <button class="btn" onclick="openModal()">Öffnen</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- React Example Form -->
+        <section>
+            <h2>Beispiel: Kontaktformular</h2>
+            <div class="glass glass-medium card">
+                <h3>React Form mit GlassInput</h3>
+                <form onsubmit="return false;">
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" placeholder="Dein Name..." />
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="deine@email.com" />
+                    </div>
+
+                    <div class="input-group">
+                        <label>Nachricht</label>
+                        <textarea placeholder="Schreib eine Nachricht..."></textarea>
+                    </div>
+
+                    <button class="btn" onclick="alert('✅ Nachricht in React verarbeitet!')">Senden</button>
+                    <button class="btn" style="margin-left: 10px; background: rgba(255, 100, 100, 0.2); border-color: rgba(255, 150, 150, 0.3);">Zurücksetzen</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section>
+            <h2>React Features</h2>
+            <div class="glass glass-light card" style="padding: 40px;">
+                <ul class="features" style="column-count: 2; gap: 30px;">
+                    <li>⚛️ React Hooks Support</li>
+                    <li>🎣 useGlassMorphism Custom Hook</li>
+                    <li>🔄 State Management Integration</li>
+                    <li>📝 JSX/TSX Compatible</li>
+                    <li>💫 CSS-in-JS Styling</li>
+                    <li>🎯 Props-basierte Anpassung</li>
+                    <li>🎨 Inline Styles Support</li>
+                    <li>⚡ Performance Optimiert</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>⚛️ React Demo | Glass Morphism Kit</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">React Framework mit modernen Glaseffekten</p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="glass glass-medium card">
+            <h2>Glass Modal in React</h2>
+            <p>Dies ist ein Modal, das mit React State-Management gesteuert wird.</p>
+            <p style="margin-bottom: 20px;">React ermöglicht einfache Verwaltung von Modal-Zuständen mit useState() und Conditional Rendering.</p>
+            <button class="btn" onclick="closeModal()">Schließen</button>
+        </div>
+    </div>
+
+    <script>
+        function selectVariant(element, variant) {
+            document.querySelectorAll('.grid-variants .card').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
