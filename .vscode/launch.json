@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Open demo.html",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/demo.html",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Open demo-react.html",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/demo-react.html",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Open demo-angular.html",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/demo-angular.html",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

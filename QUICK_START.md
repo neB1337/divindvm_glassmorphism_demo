@@ -4,67 +4,95 @@ Kurze Anleitung zum Starten des glassmorphic-kit Projekts.
 
 ## Voraussetzungen
 
-- Node.js und npm installiert
-- http-server installiert (wird automatisch installiert, oder global: `npm install -g http-server`)
+- Node.js (v14+) und npm installiert
+- Windows, macOS oder Linux
+- Ein moderner Webbrowser (Chrome, Firefox, Safari, Edge)
 
-## Schritte zum Starten
+## ⚡ Schnellstart mit startup-Skript (Empfohlen)
 
-### 1. Abhängigkeiten installieren
+### Windows
 
-```bash
-cd glassmorphic-kit
-npm install
-```
-
-Dies installiert alle erforderlichen Pakete und buildet das Projekt automatisch.
-
-### 2. (Optional) Entwicklungsmodus starten
-
-Für automatisches Rebuilden bei Dateiänderungen:
+1. **Öffne den Explorer** und navigiere zum Projektordner `glassmorphic-kit`
+2. **Doppelklick** auf `startup.bat`
+3. **Fertig!** Das Skript wird automatisch:
+   - Alle Abhängigkeiten installieren
+   - Das Projekt bauen
+   - HTTP-Server starten
+   - Die Demo im Browser öffnen
 
 ```bash
-npm run dev
+startup.bat
 ```
 
-Der Watch-Modus überwacht die Dateien und rebuildet bei Änderungen.
+### macOS / Linux
 
-### 3. HTTP-Server starten
+1. **Terminal öffnen** im Projektordner `glassmorphic-kit`
+2. **Berechtigungen setzen:**
+   ```bash
+   chmod +x startup.sh
+   ```
+3. **Skript ausführen:**
+   ```bash
+   ./startup.sh
+   ```
 
-In einem neuen Terminal:
+## Demo-Seiten
 
-```bash
-cd glassmorphic-kit
-http-server -p 8080 -a localhost
-```
-
-### 4. Demo-Seiten im Browser öffnen
-
-Öffnen Sie eine der folgenden URLs in Ihrem Browser:
+Nach erfolgreicher Ausführung des Startup-Skripts sind automatisch verfügbar:
 
 - **Standard-Demo**: http://localhost:8080/demo.html
 - **React-Demo**: http://localhost:8080/demo-react.html
 - **Angular-Demo**: http://localhost:8080/demo-angular.html
 
-## Verfügbare npm-Befehle
+
+
+## Weitere npm-Befehle (für fortgeschrittene Nutzer)
+
+Für Entwicklung und Customization:
 
 | Befehl | Beschreibung |
 |--------|-------------|
+| `npm run dev` | Startet Watch-Modus für Entwicklung (Auto-Rebuild) |
 | `npm run build` | Buildet das Projekt mit Rollup |
-| `npm run dev` | Startet Watch-Modus für Entwicklung |
 | `npm run type-check` | Führt TypeScript-Typprüfung durch |
 | `npm run lint` | ESLint-Überprüfung durchführen |
 | `npm test` | Tests ausführen (Jest) |
 
+Starten Sie diese Befehle in separaten Terminals im Projektordner `glassmorphic-kit`.
+
 ## Troubleshooting
 
-**Problem**: `npm install -g http-server` funktioniert nicht
-- **Lösung**: Verwenden Sie stattdessen `npx http-server -p 8080 -a localhost`
+### Startup-Skript Probleme
+
+**Problem**: `startup.bat` wird nicht ausgeführt (Windows)
+- **Lösung**: 
+  - Klick-Rechts auf `startup.bat` → "Mit PowerShell öffnen"
+  - Oder führe in PowerShell/CMD aus: `.\startup.bat`
+  - Falls Fehler: Überprüfe, dass Node.js/npm installiert sind
+
+**Problem**: `startup.sh` funktioniert nicht (macOS/Linux)
+- **Lösung**:
+  - Stelle sicher, dass das Skript ausführbar ist: `chmod +x startup.sh`
+  - Starte mit: `./startup.sh`
+
+### Allgemeine Probleme
+
+**Problem**: npm ist nicht installiert
+- **Lösung**: Installiere Node.js von https://nodejs.org/ (v14+)
 
 **Problem**: Port 8080 ist bereits belegt
-- **Lösung**: Ändern Sie den Port, z.B. `http-server -p 3000 -a localhost`
+- **Lösung**: 
+  - Ändere den Port in der Datei `startup.bat` oder `startup.sh`
+  - Oder beende das Programm, das Port 8080 nutzt
 
 **Problem**: Demo-Seiten werden nicht angezeigt
-- **Lösung**: Stellen Sie sicher, dass Sie die richtige URL besuchen (z.B. http://localhost:8080/demo.html)
+- **Lösung**: 
+  - Überprüfe, dass der Server läuft: http://localhost:8080 im Browser
+  - Stelle sicher, dass du die richtige URL besuchst
+  - Leere den Browser-Cache (Ctrl+Shift+Delete)
+
+**Problem**: Browser wird nicht automatisch geöffnet
+- **Lösung**: Öffne manuell http://localhost:8080/demo.html im Browser
 
 ## Projektstruktur
 

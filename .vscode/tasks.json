@@ -1,0 +1,64 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: install",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "npm: build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "problemMatcher": [],
+      "dependsOn": ["npm: install"],
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "npm: dev (Watch Mode)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*rollup.*$",
+          "endsPattern": "^.*created.*$"
+        }
+      },
+      "group": "build"
+    },
+    {
+      "label": "npm: type-check",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "type-check"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "npm: lint",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}
